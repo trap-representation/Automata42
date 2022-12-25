@@ -163,7 +163,7 @@ task
   size_t start_at=0;
   size_t buf_len=fread(s,1,65536,stdin);
   unsigned int state=state_reading_pending;
-  _s42_char(s,&start_at,&buf_len,&state);
+  _s42_char(s,&start_at,buf_len,&state);
   if(state!=state_reading_pending){
     fprintf(stderr,\"lexer state inconsistent after exhaustion of input\\n\");
     return 1;
