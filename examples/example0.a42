@@ -18,6 +18,10 @@
 
 task "#include<stdio.h>"
 
+state_lex_failed char {
+  *: -state_lex_failed;
+}
+
 state_reading_identifier char {
   'a':; 'b':; 'c':; 'd':; 'e':; 'f':; 'g':; 'h':;
   'i':; 'j':; 'k':; 'l':; 'm':; 'n':; 'o':; 'p':;
@@ -42,6 +46,7 @@ state_reading_identifier char {
 
   ' ':; '\\n': task "printf(\" - identifier\\n\");" -state_reading_pending;
 
+  *: task "printf(\"unexpected character while reading identifier %c\\n\",s[*p]);" -state_lex_failed;
 }
 
 state_reading_floating_constant char {
@@ -69,6 +74,8 @@ state_reading_floating_constant char {
   '/': task "printf(\" - floating-constant\\n\");" -state_reading_multiline_comment;
 
   ' ':; '\\n': task "printf(\" - floating-constant\\n\");" -state_reading_pending;
+
+  *: task "printf(\"unexpected character while reading floating-constant %c\\n\",s[*p]);" -state_lex_failed;
 }
 
 state_reading_decimal_constant char {
@@ -98,6 +105,8 @@ state_reading_decimal_constant char {
   '/': task "printf(\" - decimal-constant\\n\");" -state_reading_multiline_comment;
 
   ' ':; '\\n': task "printf(\" - decimal-constant\\n\");" -state_reading_pending;
+
+  *: task "printf(\"unexpected character while reading decimal-constant %c\\n\",s[*p]);" -state_lex_failed;
 }
 
 state_reading_escape_sequence_string char {
@@ -155,6 +164,8 @@ state_reading_pending char {
   '/': -state_reading_multiline_comment;
 
   ' ':; '\\n': -state_reading_pending;
+
+  *: task "printf(\"unexpected character %c\\n\",s[*p]);" -state_lex_failed;
 }
 
 task
@@ -164,8 +175,8 @@ task
   size_t buf_len=fread(s,1,65536,stdin);
   unsigned int state=state_reading_pending;
   _s42_char(s,&start_at,buf_len,&state);
-  if(state!=state_reading_pending){
-    fprintf(stderr,\"lexer state inconsistent after exhaustion of input\\n\");
+  if(state!=state_reading_pending && state!=state_lex_failed){
+    fprintf(stderr,\"source file ends in partial token\\n\");
     return 1;
   }
 }"
