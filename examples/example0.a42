@@ -1,0 +1,172 @@
+%   A lexical analyzer for Automata42 written in Automata42
+
+/   Copyright (C) 2022  Somdipto Chakraborty
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+/
+
+
+task "#include<stdio.h>"
+
+state_reading_identifier char {
+  'a':; 'b':; 'c':; 'd':; 'e':; 'f':; 'g':; 'h':;
+  'i':; 'j':; 'k':; 'l':; 'm':; 'n':; 'o':; 'p':;
+  'q':; 'r':; 's':; 't':; 'u':; 'v':; 'w':; 'x':;
+  'y':; 'z':; 'A':; 'B':; 'C':; 'D':; 'E':; 'F':;
+  'G':; 'H':; 'I':; 'J':; 'L':; 'M':; 'N':; 'O':;
+  'P':; 'Q':; 'R':; 'S':; 'T':; 'U':; 'V':; 'W':;
+  'X':; 'Y':; 'Z':; '_':; '^':; '!':; '~':; '`':;
+  '@':; '$':; '&':; '|':; '\\\\':; '[':; ']':;
+  '(':; ')':; ',':; '#':; '0':; '1':; '2':;
+  '3':; '4':; '5':; '6':; '7':; '8':; '9': task "fputc(s[*p],stdout);" -state_reading_identifier;
+
+  '{':; '}':; ':':; '-':; '+':; '*':; ';': task "printf(\" - identifier\\n\");" task "printf(\"%c - punctuator\\n\",s[*p]);" -state_reading_pending;
+
+  '"': task "printf(\" - identifier\\n\");" -state_reading_character_sequence_string;
+
+  '\\\'': task "printf(\" - identifier\\n\");" -state_reading_character_sequence_char;
+
+  '%': task "printf(\" - identifier\\n\");" -state_reading_singleline_comment;
+
+  '/': task "printf(\" - identifier\\n\");" -state_reading_multiline_comment;
+
+  ' ':; '\\n': task "printf(\" - identifier\\n\");" -state_reading_pending;
+
+}
+
+state_reading_floating_constant char {
+  '0':; '1':; '2':; '3':; '4':; '5':; '6':; '7':;
+  '8':; '9': -state_reading_floating_constant;
+
+  'a':; 'b':; 'c':; 'd':; 'e':; 'f':; 'g':; 'h':;
+  'i':; 'j':; 'k':; 'l':; 'm':; 'n':; 'o':; 'p':;
+  'q':; 'r':; 's':; 't':; 'u':; 'v':; 'w':; 'x':;
+  'y':; 'z':; 'A':; 'B':; 'C':; 'D':; 'E':; 'F':;
+  'G':; 'H':; 'I':; 'J':; 'L':; 'M':; 'N':; 'O':;
+  'P':; 'Q':; 'R':; 'S':; 'T':; 'U':; 'V':; 'W':;
+  'X':; 'Y':; 'Z':; '_':; '^':; '!':; '~':; '`':;
+  '@':; '$':; '&':; '|':; '\\\\':; '[':; ']':;
+  '(':; ')':; ',':; '#': task "printf(\" - floating-constant\\n\");" task "fputc(s[*p],stdout);" -state_reading_identifier;
+
+  '{':; '}':; ':':; '-':; '+':; '*':; ';': task "printf(\" - floating-constant\\n\");" task "printf(\"%c - punctuator\\n\",s[*p]);" -state_reading_pending;
+
+  '"': task "printf(\" - floating-constant\\n\");" -state_reading_character_sequence_string;
+
+  '\\\'': task "printf(\" - floating-constant\\n\");" -state_reading_character_sequence_char;
+
+  '%': task "printf(\" - floating-constant\\n\");" -state_reading_singleline_comment;
+
+  '/': task "printf(\" - floating-constant\\n\");" -state_reading_multiline_comment;
+
+  ' ':; '\\n': task "printf(\" - floating-constant\\n\");" -state_reading_pending;
+}
+
+state_reading_decimal_constant char {
+  '0':; '1':; '2':; '3':; '4':; '5':; '6':; '7':;
+  '8':; '9': -state_reading_decimal_constant;
+
+  '.': -state_reading_floating_constant;
+
+  'a':; 'b':; 'c':; 'd':; 'e':; 'f':; 'g':; 'h':;
+  'i':; 'j':; 'k':; 'l':; 'm':; 'n':; 'o':; 'p':;
+  'q':; 'r':; 's':; 't':; 'u':; 'v':; 'w':; 'x':;
+  'y':; 'z':; 'A':; 'B':; 'C':; 'D':; 'E':; 'F':;
+  'G':; 'H':; 'I':; 'J':; 'L':; 'M':; 'N':; 'O':;
+  'P':; 'Q':; 'R':; 'S':; 'T':; 'U':; 'V':; 'W':;
+  'X':; 'Y':; 'Z':; '_':; '^':; '!':; '~':; '`':;
+  '@':; '$':; '&':; '|':; '\\\\':; '[':; ']':;
+  '(':; ')':; ',':; '#': task "printf(\" - decimal-constant\\n\");" task "fputc(s[*p],stdout);" -state_reading_identifier;
+
+  '{':; '}':; ':':; '-':; '+':; '*':; ';': task "printf(\" - decimal-constant\\n\");" task "printf(\"%c - punctuator\\n\",s[*p]);" -state_reading_pending;
+
+  '"': task "printf(\" - decimal-constant\\n\");" -state_reading_character_sequence_string;
+
+  '\\\'': task "printf(\" - decimal-constant\\n\");" -state_reading_character_sequence_char;
+
+  '%': task "printf(\" - decimal-constant\\n\");" -state_reading_singleline_comment;
+
+  '/': task "printf(\" - decimal-constant\\n\");" -state_reading_multiline_comment;
+
+  ' ':; '\\n': task "printf(\" - decimal-constant\\n\");" -state_reading_pending;
+}
+
+state_reading_escape_sequence_string char {
+  *: task "fputc(s[*p],stdout);" -state_reading_character_sequence_string;
+}
+
+state_reading_character_sequence_string char {
+  '"': task "printf(\" - character-sequence-string\\n\");" -state_reading_pending;
+  '\\\\': task "fputc('\\\\',stdout);" -state_reading_escape_sequence_string;
+  *: task "fputc(s[*p],stdout);" -state_reading_character_sequence_string;
+}
+
+state_reading_escape_sequence_char char {
+  *: task "fputc(s[*p],stdout);" -state_reading_character_sequence_char;
+}
+
+state_reading_character_sequence_char char {
+  '\\\'': task "printf(\" - character-sequence-char\\n\");" -state_reading_pending;
+  '\\\\': task "fputc('\\\\',stdout);" -state_reading_escape_sequence_char;
+  *: task "fputc(s[*p],stdout);" -state_reading_character_sequence_char;
+}
+
+state_reading_singleline_comment char {
+  '\\n': -state_reading_pending;
+  *: -state_reading_singleline_comment;
+}
+
+state_reading_multiline_comment char {
+  '/': -state_reading_pending;
+  *: -state_reading_multiline_comment;
+}
+
+state_reading_pending char {
+  'a':; 'b':; 'c':; 'd':; 'e':; 'f':; 'g':; 'h':;
+  'i':; 'j':; 'k':; 'l':; 'm':; 'n':; 'o':; 'p':;
+  'q':; 'r':; 's':; 't':; 'u':; 'v':; 'w':; 'x':;
+  'y':; 'z':; 'A':; 'B':; 'C':; 'D':; 'E':; 'F':;
+  'G':; 'H':; 'I':; 'J':; 'L':; 'M':; 'N':; 'O':;
+  'P':; 'Q':; 'R':; 'S':; 'T':; 'U':; 'V':; 'W':;
+  'X':; 'Y':; 'Z':; '_':; '^':; '!':; '~':; '`':;
+  '@':; '$':; '&':; '|':; '\\\\':; '[':; ']':;
+  '(':; ')':; ',':; '#': task "fputc(s[*p],stdout);" -state_reading_identifier;
+
+  '0':; '1':; '2':; '3':; '4':; '5':; '6':; '7':;
+  '8':; '9': task "fputc(s[*p],stdout);" -state_reading_decimal_constant;
+
+  '{':; '}':; ':':; '-':; '+':; '*':; ';': task "printf(\"%c - punctuator\\n\",s[*p]);" -state_reading_pending;
+
+  '"': -state_reading_character_sequence_string;
+
+  '\\\'': -state_reading_character_sequence_char;
+
+  '%': -state_reading_singleline_comment;
+
+  '/': -state_reading_multiline_comment;
+
+  ' ':; '\\n': -state_reading_pending;
+}
+
+task
+"int main(void){
+  char s[65536];
+  size_t start_at=0;
+  size_t buf_len=fread(s,1,65536,stdin);
+  unsigned int state=state_reading_pending;
+  _s42_char(s,&start_at,&buf_len,&state);
+  if(state!=state_reading_pending){
+    fprintf(stderr,\"lexer state inconsistent after exhaustion of input\\n\");
+    return 1;
+  }
+}"
