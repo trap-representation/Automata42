@@ -6,7 +6,7 @@ Automata42
 
 This is Automata42 - a language for defining state machines.
 
-The implementation of Automata42 I'm working on is called Simple42. As of now, Simple42 translates the source file to C; however, in the future I do have plans on adding more translation targets (including [Chlore](https://github.com/trap-representation/Chlore)).
+The implementation of Automata42 I'm working on is called Simple42. As of now, Simple42 translates the source file to C(11); however, in the future I do have plans on adding more translation targets (including [Chlore](https://github.com/trap-representation/Chlore)).
 
 I will rewrite Simple42 in Chlore soon, and open-source the project, but as of now, the only things you'll be able to find in this repository are random examples, but I hope they're enough to give people a feel of what the language is like.
 
