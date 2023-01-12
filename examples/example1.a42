@@ -1,0 +1,46 @@
+%    A program to calculate the number of newline characters read from stdin
+%    Copyright (C) 2023  Somdipto Chakraborty
+%
+%    This program is free software: you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation, either version 3 of the License, or
+%    (at your option) any later version.
+%
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+%
+%    You should have received a copy of the GNU General Public License
+%    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+task
+"#include<stdio.h>
+#include<inttypes.h>
+uint_fast64_t newline_cnt=0;"
+
+read_char char {
+  '\\n': task "newline_cnt++;" -read_char;
+  *: -read_char;
+}
+
+task
+"int main(void){
+  char s[4096];
+  size_t buf_len;
+  unsigned int state=read_char;
+  while((buf_len=fread(s,1,4096,stdin))!=0){
+    if(ferror(stdin)){
+      perror(\"\");
+      return 1;
+    }
+    size_t start_at=0;
+    _s42_char(s,&start_at,buf_len,&state);
+  }
+  if(ferror(stdin)){
+    perror(\"\");
+    return 1;
+  }
+  printf(\"%\"PRIuFAST64\"\\n\",newline_cnt);
+}"
