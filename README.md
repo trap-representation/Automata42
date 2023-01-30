@@ -16,4 +16,4 @@ Automata42 is complete enough that a lexical analyzer can be written in it that 
 
 I also wrote a [lexical analyzer for scanning C(11) source files in Automata42](https://github.com/trap-representation/A-C11-Lexical-Analyzer).
 
-The reason I built this before rewriting the MChlore translator entirely in Chlore, is because I wanted to generate a lexical analyzer with Automata42 for Chlore, even though I have hand-written one already - because why not.
+The reason I built this before rewriting the Ehre translator entirely in Chlore, is because I wanted to generate a lexical analyzer with Automata42 for Chlore, even though I have hand-written one already - because why not.
