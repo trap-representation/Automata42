@@ -1,8 +1,7 @@
 Automata42
 ----
 
-![Automata42 logo](./logo-github-light.png#gh-light-mode-only)
-![Automata42 logo](./logo-github-dark.png#gh-dark-mode-only)
+![Automata42 logo](./a42-logo.png)
 
 This is Automata42 - a language for defining state machines.
 
